@@ -11,11 +11,11 @@ Each application has its own directory containing its API specification:
 ```text
 .
 ├── backup/
-│   └── swagger.json
+│   └── swagger-public.json
 ├── devops/
-│   └── swagger.json
+│   └── swagger-public.json
 ├── data-migrator/
-│   └── swagger.json
+│   └── swagger-public.json
 ├── global-settings/
-│   └── swagger.json
+│   └── swagger-public.json
 └── README.md
