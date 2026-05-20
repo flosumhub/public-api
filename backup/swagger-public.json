@@ -5,8 +5,8 @@
       "get": {
         "operationId": "BackupsController_findAll",
         "x-public": true,
-        "summary": "Get list of backups&archives",
-        "description": "Returns a paginated list of backup and archive jobs with customizable page size. You can also select backup/archive types, date range, order and sort field",
+        "summary": "Get list of backups & archives",
+        "description": "Returns a paginated list of backup and archive jobs with customizable page size. You can also select backup/archive types, date range, order, and sort field.",
         "parameters": [
           {
             "name": "connectionId",
@@ -20,7 +20,7 @@
             "name": "search",
             "required": false,
             "in": "query",
-            "description": "Search term(max 80)",
+            "description": "Search term (max 80)",
             "example": "",
             "schema": {
               "type": "string"
@@ -30,7 +30,7 @@
             "name": "page",
             "required": true,
             "in": "query",
-            "description": "Number of page(min 1)",
+            "description": "Number of page (min 1)",
             "example": 1,
             "schema": {
               "type": "number"
@@ -40,7 +40,7 @@
             "name": "limit",
             "required": true,
             "in": "query",
-            "description": "Limit of entities in one page(min 1, max 2000)",
+            "description": "Limit of entities per page (min 1, max 2000)",
             "example": 50,
             "schema": {
               "type": "number"
@@ -113,7 +113,7 @@
             "name": "endDate",
             "required": false,
             "in": "query",
-            "example": "2026-05-19T13:21:49.238Z",
+            "example": "2026-05-20T09:00:43.285Z",
             "schema": {
               "type": "string"
             }
@@ -207,7 +207,7 @@
         "operationId": "BackupsController_createBackup",
         "x-public": true,
         "summary": "Create backup",
-        "description": "Creates a backup job. You must use one of the supported backup types: full, or template. The templateId parameter is optional and should only be provided for template backups",
+        "description": "Creates a backup job. You must use one of the supported backup types: full or template. The `templateId` parameter is optional and should only be provided for template backups",
         "parameters": [
           {
             "name": "connectionId",
@@ -353,7 +353,7 @@
         "operationId": "TemplatesController_findAll",
         "x-public": true,
         "summary": "Get list of Templates",
-        "description": "Returns paginated list of Templates with customizable page size",
+        "description": "Returns a paginated list of Templates with customizable page size",
         "parameters": [
           {
             "name": "connectionId",
@@ -367,7 +367,7 @@
             "name": "search",
             "required": false,
             "in": "query",
-            "description": "Search term(max 80)",
+            "description": "Search term (max 80)",
             "example": "",
             "schema": {
               "type": "string"
@@ -377,7 +377,7 @@
             "name": "page",
             "required": true,
             "in": "query",
-            "description": "Number of page(min 1)",
+            "description": "Number of page (min 1)",
             "example": 1,
             "schema": {
               "type": "number"
@@ -387,7 +387,7 @@
             "name": "limit",
             "required": true,
             "in": "query",
-            "description": "Limit of entities in one page(min 1, max 2000)",
+            "description": "Limit of entities per page (min 1, max 2000)",
             "example": 50,
             "schema": {
               "type": "number"
@@ -552,13 +552,13 @@
         "operationId": "ConnectionsController_find",
         "x-public": true,
         "summary": "Get list of Connections",
-        "description": "Returns paginated list of B&A Connections with customizable page size",
+        "description": "Returns a paginated list of Backup & Archive Connections with customizable page size",
         "parameters": [
           {
             "name": "search",
             "required": false,
             "in": "query",
-            "description": "Search term(max 80)",
+            "description": "Search term (max 80)",
             "example": "",
             "schema": {
               "type": "string"
@@ -568,7 +568,7 @@
             "name": "page",
             "required": true,
             "in": "query",
-            "description": "Number of page(min 1)",
+            "description": "Number of page (min 1)",
             "example": 1,
             "schema": {
               "type": "number"
@@ -578,7 +578,7 @@
             "name": "limit",
             "required": true,
             "in": "query",
-            "description": "Limit of entities in one page(min 1, max 2000)",
+            "description": "Limit of entities per page (min 1, max 2000)",
             "example": 50,
             "schema": {
               "type": "number"
@@ -587,7 +587,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns a paginated list of B&A Connections",
+            "description": "Returns a paginated list of Backup & Archive Connections",
             "content": {
               "application/json": {
                 "schema": {
@@ -636,7 +636,7 @@
         "operationId": "ConnectionsController_findById",
         "x-public": true,
         "summary": "Get Connection by Id",
-        "description": "Returns B&A Connection by Id",
+        "description": "Returns the Backup & Archive Connection by Id",
         "parameters": [
           {
             "name": "connectionId",
@@ -649,7 +649,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns the B&A Connection by Id",
+            "description": "Returns the Backup & Archive Connection by Id",
             "content": {
               "application/json": {
                 "schema": {
@@ -694,7 +694,7 @@
         "operationId": "ConnectionsController_getConnectionId",
         "x-public": true,
         "summary": "Get Connection Id by Salesforce organization Id",
-        "description": "Returns the B&A Connection Id by Salesforce organization Id",
+        "description": "Returns the Backup & Archive Connection Id by Salesforce organization Id",
         "parameters": [
           {
             "name": "salesforceOrgId",
@@ -709,7 +709,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns the B&A Connection",
+            "description": "Returns the Backup & Archive Connection",
             "content": {
               "application/json": {
                 "schema": {
@@ -754,7 +754,7 @@
         "operationId": "SchedulersController_createBackupScheduler",
         "x-public": true,
         "summary": "Create Backup Scheduler",
-        "description": "Creates a Scheduler. You must use one of the supported scheduler types: full backup, templated backup. The templateId parameter is optional and should only be provided for template backups. Run at time should be unique. You can't create schedulers with the same time",
+        "description": "Creates a backup Scheduler. You must use one of the supported scheduler types:\n\n- `full backup`\n- `templated backup`\n\nThe `templateId` parameter is optional and should only be provided for template backups.\n\nThe `runAt` time must be unique because schedulers can't run at the same time.",
         "parameters": [
           {
             "name": "connectionId",
@@ -787,7 +787,7 @@
             }
           },
           "400": {
-            "description": "Incorrect request data is provided. For example, connectionId or templateId isn't a valid positive number",
+            "description": "Incorrect request data is provided. For example, `connectionId` or `templateId` isn't a valid positive number",
             "content": {
               "application/json": {
                 "schema": {
@@ -822,7 +822,7 @@
         "operationId": "SchedulersController_findAll",
         "x-public": true,
         "summary": "Get list of Schedulers",
-        "description": "Returns a list of B&A Schedulers for the Connection. You can also pass templateId to get Schedulers related to a specific template",
+        "description": "Returns a list of Backup & Archive Schedulers for the Connection. You can also pass `templateId` to get Schedulers related to a specific template",
         "parameters": [
           {
             "name": "connectionId",
@@ -843,7 +843,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns list of B&A Schedulers",
+            "description": "Returns list of Backup & Archive Schedulers",
             "content": {
               "application/json": {
                 "schema": {
@@ -891,7 +891,7 @@
         "operationId": "SchedulersController_findOneBackupScheduler",
         "x-public": true,
         "summary": "Get Scheduler by Id",
-        "description": "Returns the B&A Scheduler by Id",
+        "description": "Returns the Backup & Archive Scheduler by Id",
         "parameters": [
           {
             "name": "id",
@@ -912,7 +912,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns the B&A Scheduler by Id",
+            "description": "Returns the Backup & Archive Scheduler by Id",
             "content": {
               "application/json": {
                 "schema": {
@@ -967,7 +967,7 @@
         "operationId": "JobsController_getLogsDetails",
         "x-public": true,
         "summary": "Get job details",
-        "description": "Returns the log details as a streamable file containing program job logs. Can be used for completed or aborted jobs to review results, or for running jobs to view runtime logs",
+        "description": "Returns a streamable file that contains a job’s log. You can read the log file for completed or aborted jobs to review results. You can also stream the log file for a running job to view logs in real time.",
         "parameters": [
           {
             "name": "id",
@@ -1168,7 +1168,7 @@
         "operationId": "ConnectionSettingsController_get",
         "x-public": true,
         "summary": "Get Connection settings",
-        "description": "Returns the Connection settings containing information about API quota, B&A connection, and scheduler activity",
+        "description": "Returns the Connection settings containing information about API quota, Backup & Archive Connection, and scheduler activity",
         "parameters": [
           {
             "name": "connectionId",
@@ -1223,7 +1223,8 @@
       "put": {
         "operationId": "ConnectionSettingsController_updateConnectionBackupSetting",
         "x-public": true,
-        "summary": "Update of connection backup settings",
+        "summary": "Update connection scheduler availability settings",
+        "description": "Updates scheduler availability for backup and archive operations for the specified connection, including optional initial binary records limit configuration.",
         "parameters": [
           {
             "name": "connectionId",
@@ -1246,7 +1247,7 @@
         },
         "responses": {
           "200": {
-            "description": "Connection scheduler run capability updated",
+            "description": "The connection's scheduler run capability was updated.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1270,7 +1271,7 @@
   "info": {
     "title": "Flosum Backup API Service",
     "description": "The Flosum Backup API description",
-    "version": "4.6.13",
+    "version": "4.6.12-test.0",
     "contact": {}
   },
   "tags": [],
@@ -1289,7 +1290,7 @@
         "properties": {
           "total": {
             "type": "number",
-            "description": "Total entities",
+            "description": "Total number of entities.",
             "example": 1
           },
           "items": {
@@ -1314,7 +1315,7 @@
           "name": {
             "type": "string",
             "example": "My backup",
-            "description": "Backup name"
+            "description": "Backup or archive name."
           },
           "jobId": {
             "type": "number",
@@ -1559,7 +1560,7 @@
           "name": {
             "type": "string",
             "example": "My backup",
-            "description": "Backup name"
+            "description": "Backup or archive name."
           },
           "description": {
             "type": "string",
@@ -1892,7 +1893,7 @@
         "properties": {
           "total": {
             "type": "number",
-            "description": "Total entities",
+            "description": "Total number of entities.",
             "example": 1
           },
           "items": {
@@ -2033,7 +2034,7 @@
           "userName": {
             "type": "string",
             "example": "example@email.com",
-            "description": "User name of connection"
+            "description": "Username for authenticating the connection."
           },
           "salesforceOrgType": {
             "type": "string",
@@ -2072,17 +2073,17 @@
           "userFullName": {
             "type": "string",
             "example": "John Doe",
-            "description": "Full user name of connection"
+            "description": "Full name of user for authenticating the connection."
           },
           "userName": {
             "type": "string",
             "example": "example@email.com",
-            "description": "User name of connection"
+            "description": "Username for authenticating the connection."
           },
           "salesforceOrgId": {
             "type": "string",
             "example": "12ABC34567892DEFGC",
-            "description": "Salesforce connection id"
+            "description": "Salesforce organization ID"
           },
           "salesforceOrgType": {
             "type": "string",
@@ -2125,7 +2126,7 @@
               "last"
             ],
             "example": "first",
-            "description": "First/Last weekday of month"
+            "description": "First or last weekday of the month."
           },
           "weekDay": {
             "type": "number",
@@ -2139,7 +2140,7 @@
               6
             ],
             "example": 1,
-            "description": "Day of week"
+            "description": "Day of the week."
           }
         },
         "required": [
@@ -2164,7 +2165,7 @@
               0,
               1
             ],
-            "description": "Should be populated if type of repeat on equal to weekly",
+            "description": "Should be populated when `type` is `weekly`.",
             "items": {
               "type": "number",
               "enum": [
@@ -2181,7 +2182,7 @@
           "dayOfMonth": {
             "type": "number",
             "example": "1",
-            "description": "Should be populated if type of repeat on equal to monthly. Can be null if populated weekDayOfMonth"
+            "description": "Should be populated when `type` is `monthly`. Can be null if `weekDayOfMonth` is populated."
           },
           "weekDayOfMonth": {
             "description": "Should be populated if type of repeat on equal to monthly. Can be null if populated dayOfMonth",
@@ -2215,7 +2216,7 @@
           "repeatEvery": {
             "type": "number",
             "example": "2",
-            "description": "Repeat every x month/week/day/hour"
+            "description": "Repeat every x months/weeks/days/hours."
           },
           "runAt": {
             "type": "string",
@@ -2245,7 +2246,7 @@
             "example": "UTC"
           },
           "configuration": {
-            "description": "Information about frequency of scheduler, repeat and running time",
+            "description": "Information about frequency of scheduler, repeat and running time.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/SchedulerConfigurationDto"
@@ -2261,7 +2262,7 @@
             "description": "Scheduler name"
           },
           "jobSettings": {
-            "description": "Backup job settings. Should be populated for backup types of scheduler",
+            "description": "Backup job settings. Required if backup type is scheduler.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/BackupSettingsDto"
@@ -2421,11 +2422,11 @@
           },
           "backupSuccessCount": {
             "type": "number",
-            "description": "Success count value of backup"
+            "description": "Number of successfully backed up records."
           },
           "removeSuccessCount": {
             "type": "number",
-            "description": "Success count value of remove"
+            "description": "Number of successfully removed records."
           },
           "successCount": {
             "type": "number",
@@ -2437,23 +2438,23 @@
           },
           "restoreSuccessCount": {
             "type": "number",
-            "description": "Success count value of restore data/metadata"
+            "description": "Number of successfully restored records."
           },
           "restoreFailedCount": {
             "type": "number",
-            "description": "Failed count value of restore data/metadata"
+            "description": "Number of records that failed to restore."
           },
           "updateSuccessCount": {
             "type": "number",
-            "description": "Success update count value of restore data"
+            "description": "Updated number of successfully restored records."
           },
           "updateFailedCount": {
             "type": "number",
-            "description": "Failed update count value of restore data"
+            "description": "Updated number of records that failed to restore."
           },
           "searchSuccessCount": {
             "type": "number",
-            "description": "Success count value of search"
+            "description": "Number of records found in search."
           }
         },
         "required": [
@@ -2478,12 +2479,12 @@
         "properties": {
           "rest": {
             "type": "number",
-            "description": "Rest API quota in percentage(1-100)",
+            "description": "REST API quota in percentage (1-100)",
             "example": 80
           },
           "bulk": {
             "type": "number",
-            "description": "Bulk API quota in percentage(1-100)",
+            "description": "Bulk API quota in percentage (1-100)",
             "example": 80
           }
         },
@@ -2507,12 +2508,12 @@
           "userName": {
             "type": "string",
             "example": "example@email.com",
-            "description": "User name of connection"
+            "description": "Username for authenticating the connection."
           },
           "salesforceOrgId": {
             "type": "string",
             "example": "12ABC34567892DEFGC",
-            "description": "Salesforce connection id"
+            "description": "Salesforce organization ID"
           },
           "salesforceOrgType": {
             "type": "string",
