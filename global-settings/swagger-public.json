@@ -3,12 +3,12 @@
   "paths": {
     "/api/v1/oauth/authorize": {
       "get": {
-        "description": "Authorizes a user via OAuth to connect an application.\n\n\n\nOAuth authorization URL Construction:\n\n\n\n{GLOBAL_SETTINGS_DOMAIN}/api/v1/oauth/authorize?client_id={CLIENT_ID}&response_type=code&redirect_uri={REDIRECT_URI}&state={STATE}\n\n\n\nAfter authorization, you will receive the authorization code and provided state\nas query parameters in the redirect URL:\n\n\n{REDIRECT_URI}?code={AUTHORIZATION_CODE}&state={PROVIDED_STATE}\n\n\n\nFor GLOBAL_SETTINGS_DOMAIN, use the domain of your Flosum instance.\nExample: global-us.flosum.app\n\nYou can get CLIENT_ID in your connected app",
+        "description": "Authorizes a user via OAuth to connect an application.\n\nOAuth authorization URL construction:\n`{GLOBAL_SETTINGS_DOMAIN}/api/v1/oauth/authorize?client_id={CLIENT_ID}&response_type=code&redirect_uri={REDIRECT_URI}&state={STATE}`\n\nAfter authorization, you will receive the authorization code and the provided state as query parameters in the redirect URL:\n`{REDIRECT_URI}?code={AUTHORIZATION_CODE}&state={PROVIDED_STATE}`\n\nFor `{GLOBAL_SETTINGS_DOMAIN}`, use the domain of your Flosum Global Settings instance (for example, `global-us.flosum.app`).\n\nYou can find the `{CLIENT_ID}` in your connected app under Global Settings > Security > Connected Apps.",
         "operationId": "OAuthController_authorize_v1",
         "parameters": [],
         "responses": {
           "302": {
-            "description": "Redirects to the redirect URI with authorization code and state as query parameters in the URL",
+            "description": "Redirects to the redirect URI with the authorization code and state as query parameters in the URL.",
             "content": {
               "application/json": {
                 "schema": {
@@ -47,7 +47,7 @@
     },
     "/api/v1/oauth/token": {
       "post": {
-        "description": "Exchanges authorization code or refresh token for access token.\n\n\n\nFirst, obtain an authorization code via the OAuth /authorize endpoint\n\n\nThen pass it in \n{GLOBAL_SETTINGS_DOMAIN}/api/v1/oauth/token?grant_type=authorization_code&code={CODE}&redirect_uri={REDIRECT_URI}&client_id={CLIENT_ID}&client_secret={CLIENT_SECRET}\n\n\nAfter successful request you will get response containing refresh_token.\n\n\nYou can use it to get new access token throw passing it in\n\n\n{GLOBAL_SETTINGS_DOMAIN}/api/v1/oauth/token?grant_type=refresh_token&refresh_token={REFRESH_TOKEN}&redirect_uri={REDIRECT_URI}&client_id={CLIENT_ID}&client_secret={CLIENT_SECRET}\n\n\n\nYou can get CLIENT_ID and CLIENT_SECRET in your connected app",
+        "description": "Exchanges an authorization code or refresh token for an access token.\n\nFirst, obtain an authorization code via the OAuth `/authorize` endpoint, then pass it to the `/token` endpoint:\n`{GLOBAL_SETTINGS_DOMAIN}/api/v1/oauth/token?grant_type=authorization_code&code={CODE}&redirect_uri={REDIRECT_URI}&client_id={CLIENT_ID}&client_secret={CLIENT_SECRET}`\n\nAfter a successful request, you will get a response containing a `refresh_token`. You can use it to get a new access token by passing it to the token endpoint:\n`{GLOBAL_SETTINGS_DOMAIN}/api/v1/oauth/token?grant_type=refresh_token&refresh_token={REFRESH_TOKEN}&redirect_uri={REDIRECT_URI}&client_id={CLIENT_ID}&client_secret={CLIENT_SECRET}`\n\nYou can get `{CLIENT_ID}` and `{CLIENT_SECRET}` in your connected app under Global Settings > Security > Connected Apps.",
         "operationId": "OAuthController_token_v1",
         "parameters": [],
         "requestBody": {
@@ -62,7 +62,7 @@
         },
         "responses": {
           "200": {
-            "description": "Returns access_token, refresh_token and expires_in in seconds",
+            "description": "Returns access_token, refresh_token, and expires_in (in seconds).",
             "content": {
               "application/json": {
                 "schema": {
@@ -304,12 +304,12 @@
           },
           "code": {
             "type": "string",
-            "description": "Authorization code extracted from OAuth /authorize response parameters(used when grant_type=authorization_code)",
+            "description": "Authorization code extracted from the OAuth `/authorize` response parameters (used when `grant_type=authorization_code`).",
             "example": "abc123def456ghi789"
           },
           "refresh_token": {
             "type": "string",
-            "description": "Refresh token code extracted from OAuth /token response parameters(used when grant_type=refresh_token)",
+            "description": "Refresh token extracted from the OAuth `/token` response parameters (used when `grant_type=refresh_token`).",
             "example": "abcd0123efgh4567ijkl8901mnop2345qrst6789uvwx0123yzab4567cdef8901ghij2345"
           },
           "redirect_uri": {
