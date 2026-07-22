@@ -1,13 +1,22 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/fit/commits": {
+    "/topologies/{topologyId}/fit/commits": {
       "post": {
         "operationId": "CommitsController_create",
         "x-public-api": true,
         "summary": "Commit components to a branch",
         "description": "Creates a new branch commit from the provided component payload. Each component may include one or more files, and file contents must be supplied as Base64-encoded strings.",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "topologyId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -58,13 +67,22 @@
         ]
       }
     },
-    "/fit/pull-requests": {
+    "/topologies/{topologyId}/fit/pull-requests": {
       "post": {
         "operationId": "PullRequestsController_create",
         "x-public-api": true,
         "summary": "Create pull request.",
         "description": "Creates a new pull request between the specified branches.",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "topologyId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -142,13 +160,23 @@
         ]
       }
     },
-    "/fit/branches": {
+    "/topologies/{topologyId}/fit/branches": {
       "post": {
         "operationId": "BranchesController_create",
         "x-public-api": true,
         "summary": "Create branch",
         "description": "Creates a new branch.",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "topologyId",
+            "required": true,
+            "in": "path",
+            "example": 1,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -216,228 +244,21 @@
         ]
       }
     },
-    "/pipelines/{pipelineId}/run": {
-      "post": {
-        "operationId": "RunsController_run",
-        "x-public-api": true,
-        "summary": "Run a new pipeline",
-        "description": "Run a new pipeline run for the selected branch.",
-        "parameters": [
-          {
-            "name": "pipelineId",
-            "required": true,
-            "in": "path",
-            "description": "The ID of the pipeline to execute.",
-            "example": 3,
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RunPipelineBodyDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Pipeline run request has been accepted."
-          },
-          "400": {
-            "description": "Invalid request payload, params, or headers.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationExceptionDto"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "You do not have permission to execute pipelines.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected internal error while processing a pipeline run request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionDto"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Pipelines Runs"
-        ]
-      }
-    },
-    "/branches/{branchId}/pipeline-activity/{activityId}": {
-      "get": {
-        "operationId": "PipelineActivitiesController_get",
-        "x-public-api": true,
-        "summary": "Get a pipeline run by ID",
-        "description": "Returns details of a specific pipeline run.",
-        "parameters": [
-          {
-            "name": "branchId",
-            "required": true,
-            "in": "path",
-            "description": "The ID of the branch the pipeline run is associated with.",
-            "example": 42,
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "activityId",
-            "required": true,
-            "in": "path",
-            "description": "The ID of the pipeline run to retrieve.",
-            "example": 88,
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Detailed pipeline run record including step-by-step execution status.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetPipelineActivityResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request params, query, or headers.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationExceptionDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "The specified pipeline run was not found on this branch.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected internal error while reading pipeline activity data.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionDto"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Pipeline Activities"
-        ]
-      }
-    },
-    "/activities": {
-      "post": {
-        "operationId": "ActivitiesController_create",
-        "x-public-api": true,
-        "summary": "Create activity",
-        "description": "Creates a new activity.",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateActivityBodyDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateActivityResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid activity payload.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationExceptionDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "A required related resource was not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionDto"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "The request conflicts with the current state of the resource.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected internal error while processing activities.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionDto"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Activities"
-        ]
-      },
+    "/topologies/{topologyId}/activities": {
       "get": {
         "operationId": "ActivitiesController_list",
         "x-public-api": true,
         "summary": "Get list of activities",
         "description": "Returns a paginated list of activities for the specified resource.",
         "parameters": [
+          {
+            "name": "topologyId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
           {
             "name": "entityId",
             "required": false,
@@ -604,15 +425,104 @@
         "tags": [
           "Activities"
         ]
+      },
+      "post": {
+        "operationId": "ActivitiesController_create",
+        "x-public-api": true,
+        "summary": "Create activity",
+        "description": "Creates a new activity.",
+        "parameters": [
+          {
+            "name": "topologyId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateActivityBodyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateActivityResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid activity payload.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationExceptionDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "A required related resource was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The request conflicts with the current state of the resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected internal error while processing activities.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Activities"
+        ]
       }
     },
-    "/activities/{activityId}": {
+    "/topologies/{topologyId}/activities/{activityId}": {
       "get": {
         "operationId": "ActivitiesController_get",
         "x-public-api": true,
         "summary": "Get activity by id",
         "description": "Returns detailed information about the specified activity.",
         "parameters": [
+          {
+            "name": "topologyId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
           {
             "name": "activityId",
             "required": true,
@@ -673,7 +583,7 @@
   "info": {
     "title": "Flosum Devops Api",
     "description": "The Flosum Devops API description",
-    "version": "1.136.0-dev.1",
+    "version": "1.136.0-dev.5",
     "contact": {}
   },
   "tags": [],
@@ -688,6 +598,79 @@
       }
     },
     "schemas": {
+      "ValidationExceptionDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusCode": {
+            "type": "number",
+            "enum": [
+              100,
+              101,
+              102,
+              103,
+              200,
+              201,
+              202,
+              203,
+              204,
+              205,
+              206,
+              300,
+              301,
+              302,
+              303,
+              304,
+              307,
+              308,
+              400,
+              401,
+              402,
+              403,
+              404,
+              405,
+              406,
+              407,
+              408,
+              409,
+              410,
+              411,
+              412,
+              413,
+              414,
+              415,
+              416,
+              417,
+              418,
+              421,
+              422,
+              424,
+              428,
+              429,
+              500,
+              501,
+              502,
+              503,
+              504,
+              505
+            ]
+          }
+        },
+        "required": [
+          "message",
+          "error",
+          "statusCode"
+        ]
+      },
       "ExceptionDto": {
         "type": "object",
         "properties": {
@@ -730,6 +713,102 @@
           "message",
           "error",
           "statusCode"
+        ]
+      },
+      "CreateConnectionResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "instanceUri": {
+            "type": "string"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "tenantCode": {
+            "type": "string"
+          },
+          "projectCode": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "instanceUri",
+          "userName",
+          "tenantCode",
+          "projectCode"
+        ]
+      },
+      "CreateConnectionBodyDto": {
+        "type": "object",
+        "properties": {
+          "instanceUri": {
+            "type": "string"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "apiKey": {
+            "type": "string"
+          },
+          "tenantCode": {
+            "type": "string"
+          },
+          "projectCode": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "instanceUri",
+          "userName",
+          "apiKey",
+          "tenantCode",
+          "projectCode"
+        ]
+      },
+      "UpdateConnectionBodyDto": {
+        "type": "object",
+        "properties": {
+          "apiKey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "apiKey"
+        ]
+      },
+      "MeResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "email": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "tenantName": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "tenantId",
+          "tenantName",
+          "firstName",
+          "lastName"
         ]
       },
       "UserResponseDto": {
@@ -976,110 +1055,6 @@
         },
         "required": [
           "users"
-        ]
-      },
-      "MeResponseDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "email": {
-            "type": "string"
-          },
-          "tenantId": {
-            "type": "string"
-          },
-          "tenantName": {
-            "type": "string"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "email",
-          "tenantId",
-          "tenantName",
-          "firstName",
-          "lastName"
-        ]
-      },
-      "ValidationExceptionDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "error": {
-            "type": "string",
-            "nullable": true
-          },
-          "statusCode": {
-            "type": "number",
-            "enum": [
-              100,
-              101,
-              102,
-              103,
-              200,
-              201,
-              202,
-              203,
-              204,
-              205,
-              206,
-              300,
-              301,
-              302,
-              303,
-              304,
-              307,
-              308,
-              400,
-              401,
-              402,
-              403,
-              404,
-              405,
-              406,
-              407,
-              408,
-              409,
-              410,
-              411,
-              412,
-              413,
-              414,
-              415,
-              416,
-              417,
-              418,
-              421,
-              422,
-              424,
-              428,
-              429,
-              500,
-              501,
-              502,
-              503,
-              504,
-              505
-            ]
-          }
-        },
-        "required": [
-          "message",
-          "error",
-          "statusCode"
         ]
       },
       "GetTenantDatabaseResponseDto": {
@@ -3067,8 +3042,9 @@
       "OrganizationType": {
         "type": "string",
         "enum": [
+          "Production",
           "Sandbox",
-          "Production"
+          "Development"
         ]
       },
       "ConnectionType": {
@@ -3308,7 +3284,8 @@
         "type": "string",
         "enum": [
           "jira",
-          "azure"
+          "azure",
+          "service_now"
         ]
       },
       "ListJiraAssignmentsResponseRow": {
@@ -3413,6 +3390,79 @@
           "createdAt"
         ]
       },
+      "ListServiceNowAssignmentsResponseRow": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "trackerId": {
+            "type": "number"
+          },
+          "issueId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "openedAt": {
+            "type": "string",
+            "nullable": true
+          },
+          "number": {
+            "type": "string",
+            "nullable": true
+          },
+          "shortDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "priority": {
+            "type": "string",
+            "nullable": true
+          },
+          "assignedTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "callerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "category": {
+            "type": "string",
+            "nullable": true
+          },
+          "sysCreatedOn": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "trackerId",
+          "issueId",
+          "title",
+          "openedAt",
+          "number",
+          "shortDescription",
+          "state",
+          "priority",
+          "assignedTo",
+          "callerId",
+          "category",
+          "sysCreatedOn",
+          "createdAt"
+        ]
+      },
       "ListAssignmentsResponseDto": {
         "type": "object",
         "properties": {
@@ -3425,6 +3475,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/ListAzureAssignmentsResponseRow"
+                },
+                {
+                  "$ref": "#/components/schemas/ListServiceNowAssignmentsResponseRow"
                 }
               ]
             }
@@ -3652,6 +3705,79 @@
           "createdAt"
         ]
       },
+      "CreateServiceNowAssignmentsResponseRow": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "trackerId": {
+            "type": "number"
+          },
+          "issueId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "openedAt": {
+            "type": "string",
+            "nullable": true
+          },
+          "number": {
+            "type": "string",
+            "nullable": true
+          },
+          "shortDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "priority": {
+            "type": "string",
+            "nullable": true
+          },
+          "assignedTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "callerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "category": {
+            "type": "string",
+            "nullable": true
+          },
+          "sysCreatedOn": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "trackerId",
+          "issueId",
+          "title",
+          "openedAt",
+          "number",
+          "shortDescription",
+          "state",
+          "priority",
+          "assignedTo",
+          "callerId",
+          "category",
+          "sysCreatedOn",
+          "createdAt"
+        ]
+      },
       "CreateAssignmentsResponseDto": {
         "type": "object",
         "properties": {
@@ -3664,6 +3790,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/CreateAzureAssignmentsResponseRow"
+                },
+                {
+                  "$ref": "#/components/schemas/CreateServiceNowAssignmentsResponseRow"
                 }
               ]
             }
@@ -3792,7 +3921,70 @@
           }
         }
       },
-      "GetCommitsResponseDto": {
+      "GetDiffCommitCreatorsResponseDto": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserRecordDto"
+            }
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "rows",
+          "count"
+        ]
+      },
+      "BranchDiffCommitResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "message": {
+            "type": "string"
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/UserRecordDto"
+          },
+          "hash": {
+            "type": "string"
+          },
+          "changedComponents": {
+            "type": "number"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "commit",
+              "merge"
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "message",
+          "createdBy",
+          "hash",
+          "changedComponents",
+          "type",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "GetBranchDiffCommitsResponseDto": {
         "type": "object",
         "properties": {
           "count": {
@@ -3801,7 +3993,7 @@
           "rows": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CommitResponseDto"
+              "$ref": "#/components/schemas/BranchDiffCommitResponseDto"
             }
           }
         },
@@ -7317,8 +7509,7 @@
         "properties": {
           "id": {
             "type": "number",
-            "example": 1,
-            "description": "Unique identifier of the run step."
+            "example": 1
           },
           "jobId": {
             "type": "number",
@@ -7328,8 +7519,7 @@
           },
           "name": {
             "type": "string",
-            "example": "Deploy to UAT",
-            "description": "Step display name."
+            "example": "Deploy to UAT"
           },
           "status": {
             "$ref": "#/components/schemas/ActivityStepStatus"
@@ -7340,14 +7530,12 @@
           "createdAt": {
             "type": "string",
             "nullable": true,
-            "example": "2024-11-19T12:32:23.000Z",
-            "description": "Timestamp when the step started."
+            "example": "2024-11-19T12:32:23.000Z"
           },
           "completedAt": {
             "type": "string",
             "nullable": true,
-            "example": "2024-11-19T12:35:10.000Z",
-            "description": "Timestamp when the step finished."
+            "example": "2024-11-19T12:35:10.000Z"
           },
           "duration": {
             "type": "string",
@@ -7356,8 +7544,7 @@
             "example": "00:02:47"
           },
           "description": {
-            "type": "string",
-            "description": "Optional step description."
+            "type": "string"
           },
           "successNext": {
             "description": "The next step to execute if this step succeeds. Null if this is the last step on the success path.",
@@ -7603,6 +7790,28 @@
             "type": "string"
           }
         }
+      },
+      "GetSetupResponseDto": {
+        "type": "object",
+        "properties": {
+          "isReady": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "isReady"
+        ]
+      },
+      "SetupResponseDto": {
+        "type": "object",
+        "properties": {
+          "isReady": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "isReady"
+        ]
       },
       "PublicCredentialsDto": {
         "type": "object",
@@ -8254,6 +8463,82 @@
           "resource"
         ]
       },
+      "ListTopologiesRowDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "ListTopologiesResponseDto": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ListTopologiesRowDto"
+            }
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "rows",
+          "count"
+        ]
+      },
+      "GetDefaultTopologyResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
       "EnvironmentVariablesCreatorsResponseDto": {
         "type": "object",
         "properties": {
@@ -8295,8 +8580,9 @@
       "EnvironmentVariableConfigOrganizationType": {
         "type": "string",
         "enum": [
+          "Production",
           "Sandbox",
-          "Production"
+          "Development"
         ]
       },
       "EnvironmentVariablesGetConfigResponseDto": {
@@ -8496,8 +8782,9 @@
       "EnvironmentVariableOrganizationType": {
         "type": "string",
         "enum": [
+          "Production",
           "Sandbox",
-          "Production"
+          "Development"
         ]
       },
       "GetEnvironmentVariableConfigListItemDto": {
@@ -8760,6 +9047,50 @@
         },
         "required": [
           "statuses"
+        ]
+      },
+      "MappedOrganizationDto": {
+        "type": "object",
+        "properties": {
+          "organizationId": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "required": [
+          "organizationId"
+        ]
+      },
+      "StatusMappingDto": {
+        "type": "object",
+        "properties": {
+          "organizations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MappedOrganizationDto"
+            }
+          },
+          "issueStatus": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "organizations",
+          "issueStatus"
+        ]
+      },
+      "PatchProjectBodyDto": {
+        "type": "object",
+        "properties": {
+          "statusMappings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StatusMappingDto"
+            }
+          }
+        },
+        "required": [
+          "statusMappings"
         ]
       },
       "Issue": {
@@ -11599,6 +11930,21 @@
           "token"
         ]
       },
+      "CreateServiceNowCredentials": {
+        "type": "object",
+        "properties": {
+          "instanceUrl": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "instanceUrl",
+          "token"
+        ]
+      },
       "CreateTrackerBodyDto": {
         "type": "object",
         "properties": {
@@ -11616,6 +11962,9 @@
               },
               {
                 "$ref": "#/components/schemas/CreateAzureCredentials"
+              },
+              {
+                "$ref": "#/components/schemas/CreateServiceNowCredentials"
               }
             ]
           }
@@ -11663,6 +12012,17 @@
           "token"
         ]
       },
+      "RefreshServiceNowCredentials": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token"
+        ]
+      },
       "RefreshCredentialsBodyDto": {
         "type": "object",
         "properties": {
@@ -11676,6 +12036,9 @@
               },
               {
                 "$ref": "#/components/schemas/RefreshAzureCredentials"
+              },
+              {
+                "$ref": "#/components/schemas/RefreshServiceNowCredentials"
               }
             ]
           }
@@ -11692,6 +12055,9 @@
             "type": "number"
           },
           "name": {
+            "type": "string"
+          },
+          "label": {
             "type": "string"
           }
         },
@@ -11722,7 +12088,8 @@
         "type": "object",
         "properties": {
           "externalId": {
-            "type": "string"
+            "type": "string",
+            "description": "External tracker identifier. For ServiceNow this is table name."
           },
           "name": {
             "type": "string"
@@ -11749,6 +12116,48 @@
         "required": [
           "rows",
           "count"
+        ]
+      },
+      "ServiceNowTableMetadataDto": {
+        "type": "object",
+        "properties": {
+          "sysId": {
+            "type": "string",
+            "description": "The ServiceNow table sys_id.",
+            "example": "9df1d577783103107f44afa955f38d97"
+          },
+          "superClass": {
+            "type": "object",
+            "description": "The sys_id of the parent class.",
+            "example": "7035bba6440103107f44e4ff76a86141",
+            "nullable": true
+          },
+          "superClassName": {
+            "type": "object",
+            "description": "The name of the parent class.",
+            "example": "task",
+            "nullable": true
+          },
+          "readAccess": {
+            "type": "boolean",
+            "example": true
+          },
+          "createAccess": {
+            "type": "boolean",
+            "example": true
+          },
+          "deleteAccess": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "required": [
+          "sysId",
+          "superClass",
+          "superClassName",
+          "readAccess",
+          "createAccess",
+          "deleteAccess"
         ]
       },
       "GetMappedOrganizationDto": {
@@ -11803,6 +12212,14 @@
             "items": {
               "$ref": "#/components/schemas/ProjectStatusMappingDto"
             }
+          },
+          "serviceNowMetadata": {
+            "description": "ServiceNow-specific project metadata. Returned only for ServiceNow projects.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ServiceNowTableMetadataDto"
+              }
+            ]
           }
         },
         "required": [
@@ -11819,7 +12236,7 @@
           },
           "externalId": {
             "type": "string",
-            "description": "The unique identifier of the project from the external tracker (e.g., Jira project key)."
+            "description": "The unique identifier of the project from the external tracker. For ServiceNow this is table name."
           }
         },
         "required": [
@@ -11839,50 +12256,6 @@
         },
         "required": [
           "projects"
-        ]
-      },
-      "MappedOrganizationDto": {
-        "type": "object",
-        "properties": {
-          "organizationId": {
-            "type": "number",
-            "example": 1
-          }
-        },
-        "required": [
-          "organizationId"
-        ]
-      },
-      "StatusMappingDto": {
-        "type": "object",
-        "properties": {
-          "organizations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MappedOrganizationDto"
-            }
-          },
-          "issueStatus": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "organizations",
-          "issueStatus"
-        ]
-      },
-      "PatchProjectBodyDto": {
-        "type": "object",
-        "properties": {
-          "statusMappings": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StatusMappingDto"
-            }
-          }
-        },
-        "required": [
-          "statusMappings"
         ]
       },
       "ParticipantDto": {
@@ -12073,6 +12446,11 @@
             "type": "boolean",
             "description": "Activate Vlocity LWC components after deployment.",
             "example": true
+          },
+          "dataKitActivationIsEnabled": {
+            "type": "boolean",
+            "description": "Activate DataKit components after deployment.",
+            "example": false
           },
           "isVlocityVerboseLogs": {
             "type": "boolean",
