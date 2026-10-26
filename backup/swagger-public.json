@@ -3,10 +3,8 @@
   "paths": {
     "/api/v1/connections/{connectionId}/backups": {
       "get": {
-        "operationId": "BackupsController_findAll",
-        "x-public": true,
-        "summary": "Get list of backups & archives",
-        "description": "Returns a paginated list of backup and archive jobs with customizable page size. You can also select backup/archive types, date range, order, and sort field.",
+        "description": "Returns a paginated list of backup and archive jobs with customizable page size. You can also select backup/archive types, date range, order, sort field, and whether to include only backups containing records modified by an AI agent.",
+        "operationId": "BackupsController_findAll_v1",
         "parameters": [
           {
             "name": "connectionId",
@@ -21,8 +19,8 @@
             "required": false,
             "in": "query",
             "description": "Search term (max 80)",
-            "example": "",
             "schema": {
+              "example": "",
               "type": "string"
             }
           },
@@ -31,8 +29,8 @@
             "required": true,
             "in": "query",
             "description": "Number of page (min 1)",
-            "example": 1,
             "schema": {
+              "example": 1,
               "type": "number"
             }
           },
@@ -41,8 +39,8 @@
             "required": true,
             "in": "query",
             "description": "Limit of entities per page (min 1, max 2000)",
-            "example": 50,
             "schema": {
+              "example": 50,
               "type": "number"
             }
           },
@@ -50,13 +48,13 @@
             "name": "types",
             "required": true,
             "in": "query",
-            "example": [
-              "full",
-              "full & sync",
-              "template",
-              "archive"
-            ],
             "schema": {
+              "example": [
+                "full",
+                "full & sync",
+                "template",
+                "archive"
+              ],
               "type": "array",
               "items": {
                 "type": "string",
@@ -73,13 +71,13 @@
             "name": "statuses",
             "required": true,
             "in": "query",
-            "example": [
-              "Completed",
-              "Exception",
-              "In Progress",
-              "Aborted"
-            ],
             "schema": {
+              "example": [
+                "Completed",
+                "Exception",
+                "In Progress",
+                "Aborted"
+              ],
               "type": "array",
               "items": {
                 "type": "string",
@@ -101,11 +99,20 @@
             }
           },
           {
+            "name": "aiModifiedOnly",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            }
+          },
+          {
             "name": "startedDate",
             "required": false,
             "in": "query",
-            "example": "2020-01-01T00:00:00.000Z",
             "schema": {
+              "example": "2025-09-03T12:00:00.000Z",
               "type": "string"
             }
           },
@@ -113,8 +120,8 @@
             "name": "endDate",
             "required": false,
             "in": "query",
-            "example": "2026-05-20T09:00:43.285Z",
             "schema": {
+              "example": "2025-09-22T12:00:00.000Z",
               "type": "string"
             }
           },
@@ -122,27 +129,27 @@
             "name": "sortBy",
             "required": false,
             "in": "query",
-            "example": "jobId",
             "schema": {
+              "example": "jobId",
+              "type": "string",
               "enum": [
                 "jobId",
                 "name",
                 "startedDate"
-              ],
-              "type": "string"
+              ]
             }
           },
           {
             "name": "order",
             "required": false,
             "in": "query",
-            "example": "DESC",
             "schema": {
+              "example": "DESC",
+              "type": "string",
               "enum": [
                 "ASC",
                 "DESC"
-              ],
-              "type": "string"
+              ]
             }
           }
         ],
@@ -192,22 +199,22 @@
             }
           }
         },
-        "tags": [
-          "Backups and archives"
-        ],
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "summary": "Get list of backups & archives",
+        "tags": [
+          "Backups and archives"
+        ],
+        "x-public": true
       }
     },
     "/api/v1/connections/{connectionId}/backups/backup": {
       "post": {
-        "operationId": "BackupsController_createBackup",
-        "x-public": true,
-        "summary": "Create backup",
         "description": "Creates a backup job. You must use one of the supported backup types: full or template. The `templateId` parameter is optional and should only be provided for template backups",
+        "operationId": "BackupsController_createBackup_v1",
         "parameters": [
           {
             "name": "connectionId",
@@ -270,22 +277,22 @@
             }
           }
         },
-        "tags": [
-          "Backups and archives"
-        ],
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "summary": "Create backup",
+        "tags": [
+          "Backups and archives"
+        ],
+        "x-public": true
       }
     },
     "/api/v1/connections/{connectionId}/templates/backup": {
       "post": {
-        "operationId": "TemplatesController_createBackupTemplate",
-        "x-public": true,
-        "summary": "Create backup Template",
         "description": "Creates a backup Template. You can configure record selection using declarative, SOQL, or SQL filters",
+        "operationId": "TemplatesController_createBackupTemplate_v1",
         "parameters": [
           {
             "name": "connectionId",
@@ -338,9 +345,11 @@
             }
           }
         },
+        "summary": "Create backup Template",
         "tags": [
           "Templates"
         ],
+        "x-public": true,
         "security": [
           {
             "bearerAuth": []
@@ -350,10 +359,8 @@
     },
     "/api/v1/connections/{connectionId}/templates": {
       "get": {
-        "operationId": "TemplatesController_findAll",
-        "x-public": true,
-        "summary": "Get list of Templates",
         "description": "Returns a paginated list of Templates with customizable page size",
+        "operationId": "TemplatesController_findAll_v1",
         "parameters": [
           {
             "name": "connectionId",
@@ -368,8 +375,8 @@
             "required": false,
             "in": "query",
             "description": "Search term (max 80)",
-            "example": "",
             "schema": {
+              "example": "",
               "type": "string"
             }
           },
@@ -378,8 +385,8 @@
             "required": true,
             "in": "query",
             "description": "Number of page (min 1)",
-            "example": 1,
             "schema": {
+              "example": 1,
               "type": "number"
             }
           },
@@ -388,8 +395,8 @@
             "required": true,
             "in": "query",
             "description": "Limit of entities per page (min 1, max 2000)",
-            "example": 50,
             "schema": {
+              "example": 50,
               "type": "number"
             }
           },
@@ -397,11 +404,11 @@
             "name": "types",
             "required": true,
             "in": "query",
-            "example": [
-              "backup",
-              "archive"
-            ],
             "schema": {
+              "example": [
+                "backup",
+                "archive"
+              ],
               "type": "array",
               "items": {
                 "type": "string",
@@ -416,26 +423,26 @@
             "name": "sortBy",
             "required": false,
             "in": "query",
-            "example": "updatedAt",
             "schema": {
+              "example": "updatedAt",
+              "type": "string",
               "enum": [
                 "name",
                 "updatedAt"
-              ],
-              "type": "string"
+              ]
             }
           },
           {
             "name": "order",
             "required": false,
             "in": "query",
-            "example": "DESC",
             "schema": {
+              "example": "DESC",
+              "type": "string",
               "enum": [
                 "ASC",
                 "DESC"
-              ],
-              "type": "string"
+              ]
             }
           }
         ],
@@ -471,9 +478,11 @@
             }
           }
         },
+        "summary": "Get list of Templates",
         "tags": [
           "Templates"
         ],
+        "x-public": true,
         "security": [
           {
             "bearerAuth": []
@@ -483,10 +492,8 @@
     },
     "/api/v1/connections/{connectionId}/templates/backup/{id}": {
       "get": {
-        "operationId": "TemplatesController_findOneBackupTemplate",
-        "x-public": true,
-        "summary": "Get backup Template by Id",
         "description": "Returns the Template by Id",
+        "operationId": "TemplatesController_findOneBackupTemplate_v1",
         "parameters": [
           {
             "name": "connectionId",
@@ -537,9 +544,11 @@
             }
           }
         },
+        "summary": "Get backup Template by Id",
         "tags": [
           "Templates"
         ],
+        "x-public": true,
         "security": [
           {
             "bearerAuth": []
@@ -549,18 +558,16 @@
     },
     "/api/v1/connections": {
       "get": {
-        "operationId": "ConnectionsController_find",
-        "x-public": true,
-        "summary": "Get list of Connections",
         "description": "Returns a paginated list of Backup & Archive Connections with customizable page size",
+        "operationId": "ConnectionsController_find_v1",
         "parameters": [
           {
             "name": "search",
             "required": false,
             "in": "query",
             "description": "Search term (max 80)",
-            "example": "",
             "schema": {
+              "example": "",
               "type": "string"
             }
           },
@@ -569,8 +576,8 @@
             "required": true,
             "in": "query",
             "description": "Number of page (min 1)",
-            "example": 1,
             "schema": {
+              "example": 1,
               "type": "number"
             }
           },
@@ -579,8 +586,8 @@
             "required": true,
             "in": "query",
             "description": "Limit of entities per page (min 1, max 2000)",
-            "example": 50,
             "schema": {
+              "example": 50,
               "type": "number"
             }
           }
@@ -621,9 +628,11 @@
             }
           }
         },
+        "summary": "Get list of Connections",
         "tags": [
           "Connections"
         ],
+        "x-public": true,
         "security": [
           {
             "bearerAuth": []
@@ -633,10 +642,8 @@
     },
     "/api/v1/connections/{connectionId}": {
       "get": {
-        "operationId": "ConnectionsController_findById",
-        "x-public": true,
-        "summary": "Get Connection by Id",
         "description": "Returns the Backup & Archive Connection by Id",
+        "operationId": "ConnectionsController_findById_v1",
         "parameters": [
           {
             "name": "connectionId",
@@ -679,9 +686,11 @@
             }
           }
         },
+        "summary": "Get Connection by Id",
         "tags": [
           "Connections"
         ],
+        "x-public": true,
         "security": [
           {
             "bearerAuth": []
@@ -691,18 +700,16 @@
     },
     "/api/v1/connections/connectionId/{salesforceOrgId}": {
       "get": {
-        "operationId": "ConnectionsController_getConnectionId",
-        "x-public": true,
-        "summary": "Get Connection Id by Salesforce organization Id",
         "description": "Returns the Backup & Archive Connection Id by Salesforce organization Id",
+        "operationId": "ConnectionsController_getConnectionId_v1",
         "parameters": [
           {
             "name": "salesforceOrgId",
             "required": true,
             "in": "path",
             "description": "Salesforce organization Id",
-            "example": "12ABC34567892DEFGC",
             "schema": {
+              "example": "12ABC34567892DEFGC",
               "type": "string"
             }
           }
@@ -739,9 +746,11 @@
             }
           }
         },
+        "summary": "Get Connection Id by Salesforce organization Id",
         "tags": [
           "Connections"
         ],
+        "x-public": true,
         "security": [
           {
             "bearerAuth": []
@@ -751,10 +760,8 @@
     },
     "/api/v1/connections/{connectionId}/schedulers/backup": {
       "post": {
-        "operationId": "SchedulersController_createBackupScheduler",
-        "x-public": true,
-        "summary": "Create Backup Scheduler",
         "description": "Creates a backup Scheduler. You must use one of the supported scheduler types:\n\n- `full backup`\n- `templated backup`\n\nThe `templateId` parameter is optional and should only be provided for template backups.\n\nThe `runAt` time must be unique because schedulers can't run at the same time.",
+        "operationId": "SchedulersController_createBackupScheduler_v1",
         "parameters": [
           {
             "name": "connectionId",
@@ -807,9 +814,11 @@
             }
           }
         },
+        "summary": "Create Backup Scheduler",
         "tags": [
           "Schedulers"
         ],
+        "x-public": true,
         "security": [
           {
             "bearerAuth": []
@@ -819,10 +828,8 @@
     },
     "/api/v1/connections/{connectionId}/schedulers": {
       "get": {
-        "operationId": "SchedulersController_findAll",
-        "x-public": true,
-        "summary": "Get list of Schedulers",
         "description": "Returns a list of Backup & Archive Schedulers for the Connection. You can also pass `templateId` to get Schedulers related to a specific template",
+        "operationId": "SchedulersController_findAll_v1",
         "parameters": [
           {
             "name": "connectionId",
@@ -876,9 +883,11 @@
             }
           }
         },
+        "summary": "Get list of Schedulers",
         "tags": [
           "Schedulers"
         ],
+        "x-public": true,
         "security": [
           {
             "bearerAuth": []
@@ -888,10 +897,8 @@
     },
     "/api/v1/connections/{connectionId}/schedulers/backup/{id}": {
       "get": {
-        "operationId": "SchedulersController_findOneBackupScheduler",
-        "x-public": true,
-        "summary": "Get Scheduler by Id",
         "description": "Returns the Backup & Archive Scheduler by Id",
+        "operationId": "SchedulersController_findOneBackupScheduler_v1",
         "parameters": [
           {
             "name": "id",
@@ -952,9 +959,11 @@
             }
           }
         },
+        "summary": "Get Scheduler by Id",
         "tags": [
           "Schedulers"
         ],
+        "x-public": true,
         "security": [
           {
             "bearerAuth": []
@@ -964,10 +973,8 @@
     },
     "/api/v1/connections/{connectionId}/jobs/{id}/logs/details": {
       "get": {
-        "operationId": "JobsController_getLogsDetails",
-        "x-public": true,
-        "summary": "Get job details",
-        "description": "Returns a streamable file that contains a job’s log. You can read the log file for completed or aborted jobs to review results. You can also stream the log file for a running job to view logs in real time.",
+        "description": "Returns a streamable file that contains a job’s log. ou can read the log file for completed or aborted jobs to review results. You can also stream the log file for a running job to view logs in real time.",
+        "operationId": "JobsController_getLogsDetails_v1",
         "parameters": [
           {
             "name": "id",
@@ -1018,9 +1025,11 @@
             }
           }
         },
+        "summary": "Get job details",
         "tags": [
           "Jobs"
         ],
+        "x-public": true,
         "security": [
           {
             "bearerAuth": []
@@ -1030,10 +1039,8 @@
     },
     "/api/v1/connections/{connectionId}/jobs/{id}/logs/progress": {
       "get": {
-        "operationId": "JobsController_getLogsProgress",
-        "x-public": true,
-        "summary": "Get job progress",
         "description": "Returns information about job progress steps. Can be used for completed or aborted jobs to review results, or for running jobs to view runtime progress",
+        "operationId": "JobsController_getLogsProgress_v1",
         "parameters": [
           {
             "name": "id",
@@ -1087,9 +1094,11 @@
             }
           }
         },
+        "summary": "Get job progress",
         "tags": [
           "Jobs"
         ],
+        "x-public": true,
         "security": [
           {
             "bearerAuth": []
@@ -1099,10 +1108,8 @@
     },
     "/api/v1/connections/{connectionId}/jobs/{id}/abort/backup": {
       "patch": {
-        "operationId": "JobsController_abortBackup",
-        "x-public": true,
-        "summary": "Abort backup/archive job",
         "description": "Aborts the backup or archive job",
+        "operationId": "JobsController_abortBackup_v1",
         "parameters": [
           {
             "name": "id",
@@ -1153,9 +1160,11 @@
             }
           }
         },
+        "summary": "Abort backup/archive job",
         "tags": [
           "Jobs"
         ],
+        "x-public": true,
         "security": [
           {
             "bearerAuth": []
@@ -1165,10 +1174,8 @@
     },
     "/api/v1/connections/{connectionId}/settings": {
       "get": {
-        "operationId": "ConnectionSettingsController_get",
-        "x-public": true,
-        "summary": "Get Connection settings",
         "description": "Returns the Connection settings containing information about API quota, Backup & Archive Connection, and scheduler activity",
+        "operationId": "ConnectionSettingsController_get_v1",
         "parameters": [
           {
             "name": "connectionId",
@@ -1211,9 +1218,11 @@
             }
           }
         },
+        "summary": "Get Connection settings",
         "tags": [
           "Connection settings"
         ],
+        "x-public": true,
         "security": [
           {
             "bearerAuth": []
@@ -1221,10 +1230,8 @@
         ]
       },
       "put": {
-        "operationId": "ConnectionSettingsController_updateConnectionBackupSetting",
-        "x-public": true,
-        "summary": "Update connection scheduler availability settings",
         "description": "Updates scheduler availability for backup and archive operations for the specified connection, including optional initial binary records limit configuration.",
+        "operationId": "ConnectionSettingsController_updateConnectionBackupSetting_v1",
         "parameters": [
           {
             "name": "connectionId",
@@ -1257,9 +1264,663 @@
             }
           }
         },
+        "summary": "Update connection scheduler availability settings",
         "tags": [
           "Connection settings"
         ],
+        "x-public": true,
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/connections/{connectionId}/exports/backups": {
+      "get": {
+        "description": "Returns terminal backups and archives that can be selected as an export source. Backups that are still in progress are excluded.",
+        "operationId": "ExportsController_findBackups_v1",
+        "parameters": [
+          {
+            "name": "connectionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search term (max 80)",
+            "schema": {
+              "example": "",
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "description": "Number of page (min 1)",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "description": "Limit of entities per page (min 1, max 2000)",
+            "schema": {
+              "example": 50,
+              "type": "number"
+            }
+          },
+          {
+            "name": "types",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "example": [
+                "full",
+                "full & sync",
+                "template",
+                "archive"
+              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "full",
+                  "full & sync",
+                  "template",
+                  "archive"
+                ]
+              }
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "example": "jobId",
+              "type": "string",
+              "enum": [
+                "jobId",
+                "name",
+                "startedDate"
+              ]
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "example": "DESC",
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Backups available as export sources",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/PaginatedDto"
+                    },
+                    {
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/FindBackupsResponseDto"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid pagination, sorting, or search parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationExceptionDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get backups available for export",
+        "tags": [
+          "Export"
+        ],
+        "x-public": true,
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/connections/{connectionId}/exports/backups/{backupId}/objects": {
+      "get": {
+        "description": "Returns the objects and record totals stored in the selected backup. Use an object name from this response as steps[].objectApiName when creating an export.",
+        "operationId": "ExportsController_findBackupObjects_v1",
+        "parameters": [
+          {
+            "name": "connectionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "backupId",
+            "required": true,
+            "in": "path",
+            "description": "Backup or archive identifier",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search term (max 80)",
+            "schema": {
+              "example": "",
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "description": "Number of page (min 1)",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "description": "Limit of entities per page (min 1, max 2000)",
+            "schema": {
+              "example": 50,
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "example": "name",
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "example": "DESC",
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          },
+          {
+            "name": "aiModifiedOnly",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Objects available in the selected backup",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindObjectsResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid backup ID, pagination, sorting, or filtering parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationExceptionDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Backup not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Backup is still in progress",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictExceptionDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get objects available for export from selected backup",
+        "tags": [
+          "Export"
+        ],
+        "x-public": true,
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/connections/{connectionId}/exports/backups/{backupId}": {
+      "post": {
+        "description": "Starts an asynchronous export for one or more objects from the selected backup and returns the job ID used to retrieve its status. For destination csv, the result is stored internally and can be downloaded when readyForDownload becomes true. For destination external-storage, storageId and path are required and the result is written directly to that storage. An object with no stored records can complete without generating a downloadable file. Object processing failures are reported asynchronously through the export status and public job logs.",
+        "operationId": "ExportsController_createFromBackup_v1",
+        "parameters": [
+          {
+            "name": "connectionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "backupId",
+            "required": true,
+            "in": "path",
+            "description": "Backup or archive identifier",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBackupExportBodyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Export job created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateExportResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or destination configuration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationExceptionDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Backup or configured external storage not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Backup is still in progress",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictExceptionDto"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Monthly export limit reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create export from selected backup",
+        "tags": [
+          "Export"
+        ],
+        "x-public": true,
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/connections/{connectionId}/exports/storages": {
+      "get": {
+        "description": "Returns configured external storages. Pass the selected storage ID when destination is external-storage.",
+        "operationId": "ExportsController_findStorages_v1",
+        "parameters": [
+          {
+            "name": "connectionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search term (max 80)",
+            "schema": {
+              "example": "",
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "description": "Number of page (min 1)",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "description": "Limit of entities per page (min 1, max 2000)",
+            "schema": {
+              "example": 50,
+              "type": "number"
+            }
+          },
+          {
+            "name": "orderBy",
+            "required": false,
+            "in": "query",
+            "description": "Column to sort by",
+            "schema": {
+              "default": "id",
+              "type": "string",
+              "enum": [
+                "id",
+                "name",
+                "type"
+              ]
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Sort direction",
+            "schema": {
+              "default": "DESC",
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          },
+          {
+            "name": "isDefault",
+            "required": false,
+            "in": "query",
+            "description": "Filter by default storage flag. If true, returns only backup default storages. If false, returns only non-default.",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Configured external storages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/PaginatedDto"
+                    },
+                    {
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/FindStorageResponseDto"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid pagination, sorting, or filtering parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationExceptionDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get available storages for export",
+        "tags": [
+          "Export"
+        ],
+        "x-public": true,
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/connections/{connectionId}/exports/{jobId}": {
+      "get": {
+        "description": "Returns the current export status and destination. Poll while jobStatus is In Progress. For an internal csv export, download the result when readyForDownload is true. External-storage exports are never available through the internal download endpoint. For Exception or Aborted jobs, use the public job log endpoints to retrieve failure details.",
+        "operationId": "ExportsController_findOne_v1",
+        "parameters": [
+          {
+            "name": "connectionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "jobId",
+            "required": true,
+            "in": "path",
+            "description": "Export job identifier",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Export status and download readiness",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindOneExportJobResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid job ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationExceptionDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Export not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get export status by job ID",
+        "tags": [
+          "Export"
+        ],
+        "x-public": true,
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/connections/{connectionId}/exports/{jobId}/download": {
+      "get": {
+        "description": "Downloads the generated ZIP for a csv export when its status response has readyForDownload set to true. External-storage exports cannot be downloaded through this endpoint.",
+        "operationId": "ExportsController_download_v1",
+        "parameters": [
+          {
+            "name": "connectionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "jobId",
+            "required": true,
+            "in": "path",
+            "description": "Export job identifier",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ZIP archive containing the exported CSV files",
+            "content": {
+              "application/zip": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid job ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationExceptionDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Export is not ready, has failed, was cleared, contains no downloadable data, or uses external storage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Export not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Download an internally stored export",
+        "tags": [
+          "Export"
+        ],
+        "x-public": true,
         "security": [
           {
             "bearerAuth": []
@@ -1271,7 +1932,7 @@
   "info": {
     "title": "Flosum Backup API Service",
     "description": "The Flosum Backup API description",
-    "version": "4.6.12-test.0",
+    "version": "4.8.7",
     "contact": {}
   },
   "tags": [],
@@ -1328,14 +1989,16 @@
               "Exception",
               "Completed",
               "Aborted"
-            ]
+            ],
+            "example": "Completed"
           },
           "startedDate": {
             "format": "date-time",
             "type": "string"
           },
           "duration": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "size": {
             "type": "number"
@@ -1352,7 +2015,8 @@
               "Composite & Sync Backup",
               "Import Archive",
               "Import Backup"
-            ]
+            ],
+            "example": "Composite Backup"
           }
         },
         "required": [
@@ -1394,6 +2058,9 @@
               204,
               205,
               206,
+              207,
+              208,
+              210,
               300,
               301,
               302,
@@ -1422,15 +2089,19 @@
               418,
               421,
               422,
+              423,
               424,
               428,
               429,
+              456,
               500,
               501,
               502,
               503,
               504,
-              505
+              505,
+              507,
+              508
             ],
             "example": 400
           }
@@ -1465,6 +2136,9 @@
               204,
               205,
               206,
+              207,
+              208,
+              210,
               300,
               301,
               302,
@@ -1493,15 +2167,19 @@
               418,
               421,
               422,
+              423,
               424,
               428,
               429,
+              456,
               500,
               501,
               502,
               503,
               504,
-              505
+              505,
+              507,
+              508
             ],
             "example": 404
           }
@@ -1590,10 +2268,14 @@
         "properties": {
           "message": {
             "type": "string"
+          },
+          "jobId": {
+            "type": "number"
           }
         },
         "required": [
-          "message"
+          "message",
+          "jobId"
         ]
       },
       "ConflictExceptionDto": {
@@ -1620,6 +2302,9 @@
               204,
               205,
               206,
+              207,
+              208,
+              210,
               300,
               301,
               302,
@@ -1648,15 +2333,19 @@
               418,
               421,
               422,
+              423,
               424,
               428,
               429,
+              456,
               500,
               501,
               502,
               503,
               504,
-              505
+              505,
+              507,
+              508
             ],
             "example": 409
           }
@@ -1665,6 +2354,69 @@
           "message",
           "error",
           "statusCode"
+        ]
+      },
+      "FindObjectResponseDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "totalRecords": {
+            "type": "number"
+          },
+          "addedRecordVersions": {
+            "type": "number"
+          },
+          "changedRecordVersions": {
+            "type": "number"
+          },
+          "deletedRecordVersions": {
+            "type": "number"
+          },
+          "size": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "totalRecords",
+          "addedRecordVersions",
+          "changedRecordVersions",
+          "deletedRecordVersions",
+          "size"
+        ]
+      },
+      "FindObjectsResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalData": {
+            "example": {
+              "name": "Total",
+              "totalRecords": 1
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FindObjectResponseDto"
+              }
+            ]
+          },
+          "total": {
+            "type": "number",
+            "description": "Total number of entities.",
+            "example": 1
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FindObjectResponseDto"
+            }
+          }
+        },
+        "required": [
+          "totalData",
+          "total",
+          "items"
         ]
       },
       "StreamableFile": {
@@ -1752,6 +2504,104 @@
           "value"
         ]
       },
+      "AutomationDisabledEntryDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "trigger",
+              "workflow",
+              "flow and process builder",
+              "validation rule",
+              "lookup filter"
+            ],
+            "example": "trigger"
+          },
+          "id": {
+            "type": "string",
+            "example": "01q1t0000004Xx0AAE"
+          },
+          "name": {
+            "type": "string",
+            "example": "CommonBreamTrigger"
+          },
+          "isDisabled": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "name",
+          "isDisabled"
+        ]
+      },
+      "AutomationProcessDto": {
+        "type": "object",
+        "properties": {
+          "triggerDisabled": {
+            "type": "boolean",
+            "example": false,
+            "default": false
+          },
+          "flowAndProcessBuilderDisabled": {
+            "type": "boolean",
+            "example": false,
+            "default": false
+          },
+          "validationRuleDisabled": {
+            "type": "boolean",
+            "example": false,
+            "default": false
+          },
+          "workflowDisabled": {
+            "type": "boolean",
+            "example": false,
+            "default": false
+          },
+          "lookupFilterDisabled": {
+            "type": "boolean",
+            "example": false,
+            "default": false
+          },
+          "disabledList": {
+            "example": [
+              {
+                "type": "trigger",
+                "id": "01q1t0000004Xx0AAE",
+                "name": "CrucianCarpTrigger",
+                "isDisabled": true
+              }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationDisabledEntryDto"
+            }
+          },
+          "testLevel": {
+            "type": "string",
+            "enum": [
+              "RunLocalTests",
+              "RunSpecifiedTests"
+            ]
+          },
+          "runTests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "triggerDisabled",
+          "flowAndProcessBuilderDisabled",
+          "validationRuleDisabled",
+          "workflowDisabled",
+          "lookupFilterDisabled"
+        ]
+      },
       "TemplateStep": {
         "type": "object",
         "properties": {
@@ -1797,6 +2647,9 @@
           "skipRemove": {
             "type": "boolean",
             "example": false
+          },
+          "automationProcess": {
+            "$ref": "#/components/schemas/AutomationProcessDto"
           },
           "children": {
             "example": [],
@@ -1966,6 +2819,9 @@
           },
           "parentId": {
             "type": "number"
+          },
+          "automationProcess": {
+            "$ref": "#/components/schemas/AutomationProcessDto"
           }
         },
         "required": [
@@ -2039,11 +2895,11 @@
           "salesforceOrgType": {
             "type": "string",
             "enum": [
-              "PRODUCTION",
-              "SANDBOX"
+              "Sandbox",
+              "Production"
             ],
-            "example": "PRODUCTION",
-            "description": "Salesforce organization type: SANDBOX or PRODUCTION"
+            "example": "Production",
+            "description": "Salesforce organization type: Sandbox or Production"
           }
         },
         "required": [
@@ -2088,11 +2944,11 @@
           "salesforceOrgType": {
             "type": "string",
             "enum": [
-              "PRODUCTION",
-              "SANDBOX"
+              "Sandbox",
+              "Production"
             ],
-            "example": "PRODUCTION",
-            "description": "Salesforce organization type: SANDBOX or PRODUCTION"
+            "example": "Production",
+            "description": "Salesforce organization type: Sandbox or Production"
           }
         },
         "required": [
@@ -2306,7 +3162,8 @@
               "retention policy export",
               "retention policy",
               "cache-describe",
-              "backup connections metrics"
+              "backup connections metrics",
+              "backup activity notification"
             ],
             "example": "archive"
           },
@@ -2363,7 +3220,8 @@
               "retention policy export",
               "retention policy",
               "cache-describe",
-              "backup connections metrics"
+              "backup connections metrics",
+              "backup activity notification"
             ],
             "example": "archive"
           },
@@ -2518,11 +3376,11 @@
           "salesforceOrgType": {
             "type": "string",
             "enum": [
-              "PRODUCTION",
-              "SANDBOX"
+              "Sandbox",
+              "Production"
             ],
-            "example": "PRODUCTION",
-            "description": "Salesforce organization type: SANDBOX or PRODUCTION"
+            "example": "Production",
+            "description": "Salesforce organization type: Sandbox or Production"
           }
         },
         "required": [
@@ -2562,13 +3420,21 @@
           },
           "initialBinaryRecordsLimit": {
             "type": "number"
+          },
+          "excludedObjects": {
+            "example": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "required": [
           "apiQuota",
           "info",
           "scheduler",
-          "initialBinaryRecordsLimit"
+          "initialBinaryRecordsLimit",
+          "excludedObjects"
         ]
       },
       "UpdateConnectionBackupSettingBodyDto": {
@@ -2600,6 +3466,307 @@
         },
         "required": [
           "message"
+        ]
+      },
+      "ExportDeclarativeFilterLineDto": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "example": "Test Name"
+          },
+          "field": {
+            "type": "string",
+            "enum": [
+              "Name",
+              "Id"
+            ],
+            "example": "Name"
+          },
+          "option": {
+            "type": "string",
+            "enum": [
+              "equals",
+              "in"
+            ]
+          }
+        },
+        "required": [
+          "value",
+          "field",
+          "option"
+        ]
+      },
+      "ExportStepDto": {
+        "type": "object",
+        "properties": {
+          "objectApiName": {
+            "type": "string",
+            "example": "Account",
+            "description": "Name of the object."
+          },
+          "declarativeFilter": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExportDeclarativeFilterLineDto"
+            }
+          },
+          "declarativeFilterCustomLogic": {
+            "type": "string",
+            "example": "1 AND (2 OR 3)"
+          }
+        },
+        "required": [
+          "objectApiName",
+          "declarativeFilter"
+        ]
+      },
+      "CreateExportResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "jobId": {
+            "type": "number",
+            "description": "Identifier used to retrieve the export status.",
+            "example": 123
+          }
+        },
+        "required": [
+          "message",
+          "jobId"
+        ]
+      },
+      "CreateBackupExportBodyDto": {
+        "type": "object",
+        "properties": {
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExportStepDto"
+            }
+          },
+          "destination": {
+            "type": "string",
+            "enum": [
+              "csv",
+              "external-storage"
+            ],
+            "description": "Export destination: csv stores the result internally for later download; external-storage writes it to a configured storage."
+          },
+          "path": {
+            "type": "string",
+            "description": "Path prefix in the configured storage. Required for external-storage and not allowed for csv."
+          },
+          "storageId": {
+            "type": "number",
+            "description": "Configured storage identifier. Required for external-storage and not allowed for csv."
+          }
+        },
+        "required": [
+          "steps",
+          "destination"
+        ]
+      },
+      "ExceptionDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusCode": {
+            "type": "number",
+            "enum": [
+              100,
+              101,
+              102,
+              103,
+              200,
+              201,
+              202,
+              203,
+              204,
+              205,
+              206,
+              207,
+              208,
+              210,
+              300,
+              301,
+              302,
+              303,
+              304,
+              307,
+              308,
+              400,
+              401,
+              402,
+              403,
+              404,
+              405,
+              406,
+              407,
+              408,
+              409,
+              410,
+              411,
+              412,
+              413,
+              414,
+              415,
+              416,
+              417,
+              418,
+              421,
+              422,
+              423,
+              424,
+              428,
+              429,
+              456,
+              500,
+              501,
+              502,
+              503,
+              504,
+              505,
+              507,
+              508
+            ]
+          }
+        },
+        "required": [
+          "message",
+          "error",
+          "statusCode"
+        ]
+      },
+      "FindStorageResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Local",
+              "AWS_S3",
+              "AZURE_BLOB",
+              "GOOGLE_CLOUD_STORAGE"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "type"
+        ]
+      },
+      "FindOneExportJobResponseDto": {
+        "type": "object",
+        "properties": {
+          "jobId": {
+            "type": "number",
+            "example": 1
+          },
+          "operation": {
+            "type": "string",
+            "example": "Backup"
+          },
+          "exportType": {
+            "type": "string",
+            "example": "backup"
+          },
+          "asOfDate": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "fromDate": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "toDate": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "backupId": {
+            "type": "number",
+            "nullable": true,
+            "example": 42
+          },
+          "jobStatus": {
+            "type": "string",
+            "enum": [
+              "In Progress",
+              "Exception",
+              "Completed",
+              "Aborted"
+            ]
+          },
+          "startedDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "duration": {
+            "type": "string",
+            "nullable": true
+          },
+          "readyForDownload": {
+            "type": "boolean",
+            "default": false,
+            "description": "True only when an internally stored export has completed and contains downloadable data."
+          },
+          "recordsSuccessCount": {
+            "type": "number",
+            "nullable": true
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "path": {
+            "type": "string",
+            "nullable": true,
+            "description": "Configured path for external-storage exports; null for internal exports."
+          },
+          "destination": {
+            "type": "string",
+            "enum": [
+              "csv",
+              "external-storage"
+            ],
+            "description": "csv is internal storage; external-storage writes to a configured storage."
+          }
+        },
+        "required": [
+          "jobId",
+          "operation",
+          "exportType",
+          "asOfDate",
+          "fromDate",
+          "toDate",
+          "backupId",
+          "jobStatus",
+          "startedDate",
+          "duration",
+          "readyForDownload",
+          "recordsSuccessCount",
+          "endDate",
+          "path",
+          "destination"
         ]
       }
     }
